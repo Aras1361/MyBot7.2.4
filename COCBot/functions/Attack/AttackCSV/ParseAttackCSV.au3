@@ -363,9 +363,11 @@ Func ParseAttackCSV($debug = False)
 					Case "SRIGHT"
 						ReleaseClicks()
 						ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
+						If _Sleep(500) Then Return
 					Case "SLEFT"
 						ReleaseClicks()
 						ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
+						If _Sleep(500) Then Return
 					Case "SIDE"
 						ReleaseClicks()
 						Setlog("Calculate main side... ")
