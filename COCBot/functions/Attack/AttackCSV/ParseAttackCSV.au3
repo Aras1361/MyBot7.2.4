@@ -360,6 +360,12 @@ Func ParseAttackCSV($debug = False)
 					Case "RECALC"
 						ReleaseClicks()
 						PrepareAttack($g_iMatchMode, True)
+					Case "SRIGHT"
+						ReleaseClicks()
+						ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
+					Case "SLEFT"
+						ReleaseClicks()
+						ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
 					Case "SIDE"
 						ReleaseClicks()
 						Setlog("Calculate main side... ")

@@ -273,6 +273,23 @@ Func btnTestTrain()
 	SetLog("===START===")
 	Local $hTimer = __TimerInit()
 
+;~ 	SetLog("Check troops")
+;~ 	PrepareAttack($LB, True)
+;~ 	SetLog("Swipe Right")
+;~ 	ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
+;~ 	If _sleep(500) Then Return False
+
+;~ 	If _sleep(3000) Then Return False
+
+;~ 	SetLog("Check troops 2")
+;~ 	PrepareAttack($LB, True)
+
+;~ 	SetLog("Swipe Left")
+;~ 	ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
+;~ 	If _sleep(500) Then Return False
+;~ 	SetLog("Check troops 3")
+;~ 	PrepareAttack($LB, True)
+
 	$g_bRestart = False
 	$tempDisableTrain=False
 	$tempDisableBrewSpell=False
