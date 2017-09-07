@@ -108,11 +108,11 @@ Func getProfile($x_start, $y_start) ;  -> Gets Attack Win/Defense Win/Donated/Re
 EndFunc   ;==>getProfile
 
 Func getTroopCountSmall($x_start, $y_start) ;  -> Gets troop amount on Attack Screen for non-selected troop kind
-	Return getOcrAndCapture("coc-t-s", $x_start, $y_start, 53, 15, True)
+	Return getOcrAndCapture("coc-t-s", $x_start, $y_start, 50, 15, True)
 EndFunc   ;==>getTroopCountSmall
 
 Func getTroopCountBig($x_start, $y_start) ;  -> Gets troop amount on Attack Screen for selected troop kind
-	Return getOcrAndCapture("coc-t-b", $x_start, $y_start, 53, 16, True)
+	Return getOcrAndCapture("coc-t-b", $x_start, $y_start, 50, 16, True)
 EndFunc   ;==>getTroopCountBig
 
 Func getTroopsSpellsLevel($x_start, $y_start) ;  -> Gets spell level on Attack Screen for selected spell kind (could be used for troops too)

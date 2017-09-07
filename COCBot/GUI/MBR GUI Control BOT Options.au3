@@ -291,9 +291,17 @@ Func btnTestTrain()
 ;~ 	ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
 ;~ 	If _sleep(500) Then Return False
 
-;~ 	SetLog("Check troops 3")
-;~ 	PrepareAttack($LB, True)
+;~ 	SetLog("Check troops 1")
+;~ 	PrepareAttack($LB)
 ;~ 	SelectDropTroop(1)
+
+;~ 	ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
+;~ 	If _sleep(500) Then Return False
+;~ 	If _sleep(3000) Then Return False
+
+;~ 	SetLog("Check troops 2")
+;~ 	PrepareAttack($LB, True, True)
+;~ 	SelectDropTroop(0)
 
 	$g_bRestart = False
 	$tempDisableTrain=False
