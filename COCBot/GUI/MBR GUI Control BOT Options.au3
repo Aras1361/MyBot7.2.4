@@ -275,25 +275,32 @@ Func btnTestTrain()
 
 ;~ 	SetLog("Check troops")
 ;~ 	PrepareAttack($LB, True)
+;~ 	SelectDropTroop(9)
 ;~ 	SetLog("Swipe Right")
 ;~ 	ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
 ;~ 	If _sleep(500) Then Return False
 
+
 ;~ 	If _sleep(3000) Then Return False
 
 ;~ 	SetLog("Check troops 2")
-;~ 	PrepareAttack($LB, True)
+;~ 	PrepareAttack($LB, True, True)
+;~ 	SelectDropTroop(10)
 
 ;~ 	SetLog("Swipe Left")
 ;~ 	ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
 ;~ 	If _sleep(500) Then Return False
+
 ;~ 	SetLog("Check troops 3")
 ;~ 	PrepareAttack($LB, True)
+;~ 	SelectDropTroop(1)
 
 	$g_bRestart = False
 	$tempDisableTrain=False
 	$tempDisableBrewSpell=False
     ModTrain()
+
+;~ 	Laboratory()
 
 	SetLog("Elapsed: " & Round(__TimerDiff($hTimer) / 1000, 2))
 	SetLog("===END===")
@@ -589,7 +596,7 @@ Func btnTestAttackCSV()
 	$g_iDebugSetlog = 1
 	$g_iDebugBuildingPos = 1
 
-	$g_iMatchMode = $DB ; define which script to use
+	$g_iMatchMode = $LB ; define which script to use
 
 	SearchZoomOut($aCenterEnemyVillageClickDrag, True, "btnTestAttackCSV")
 	ResetTHsearch()

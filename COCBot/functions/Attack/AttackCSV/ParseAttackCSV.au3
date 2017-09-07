@@ -356,18 +356,25 @@ Func ParseAttackCSV($debug = False)
 							If _Sleep($DELAYRESPOND) Then Return ; check for pause/stop
 						WEnd
 						If $exitOneStar = 1 Or $exitTwoStars = 1 Or $exitNoResources = 1 Then ExitLoop ;stop parse CSV file, start exit battle procedure
-
 					Case "RECALC"
 						ReleaseClicks()
 						PrepareAttack($g_iMatchMode, True)
-					Case "SRIGHT"
+					; samm0d
+					Case "SWIPE"
 						ReleaseClicks()
-						ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
-						If _Sleep(500) Then Return
-					Case "SLEFT"
-						ReleaseClicks()
-						ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
-						If _Sleep(500) Then Return
+						$value1 = StringStripWS($value1, $STR_STRIPALL)
+						Select
+							Case $value1 = "RIGHT"
+								SetLog("SWIPE RIGHT")
+								ClickDrag(Random(770,780,1),Random(680,690,1),Random(35,45,1),Random(680,690,1),250)
+								If _Sleep(500) Then Return
+								PrepareAttack($g_iMatchMode, True, True)
+							Case $value1 = "LEFT"
+								SetLog("SWIPE LEFT")
+								ClickDrag(Random(35,45,1),Random(680,690,1),Random(770,780,1),Random(680,690,1),250)
+								If _Sleep(500) Then Return
+								PrepareAttack($g_iMatchMode, True)
+						EndSelect
 					Case "SIDE"
 						ReleaseClicks()
 						Setlog("Calculate main side... ")

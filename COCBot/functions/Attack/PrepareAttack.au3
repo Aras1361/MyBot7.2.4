@@ -13,7 +13,7 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
+Func PrepareAttack($pMatchMode, $Remaining = False, $SRIGHT = False) ;Assigns troops
 
 	; Attack CSV has debug option to save attack line image, save have png of current $g_hHBitmap2
 	If ($pMatchMode = $DB And $g_aiAttackAlgorithm[$DB] = 1) Or ($pMatchMode = $LB And $g_aiAttackAlgorithm[$LB] = 1) Then
@@ -52,10 +52,11 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 	Next
 
 	Local $Plural = 0
-	Local $result = AttackBarCheck($Remaining)
+	Local $result = AttackBarCheck($Remaining, $SRIGHT)
 	If $g_iDebugSetlog = 1 Then Setlog("DLL Troopsbar list: " & $result, $COLOR_DEBUG)
 	Local $aTroopDataList = StringSplit($result, "|")
-	Local $aTemp[12][3]
+	; samm0d
+	Local $aTemp[12][4]
 	If $result <> "" Then
 		; example : 0#0#92|1#1#108|2#2#8|22#3#1|20#4#1|21#5#1|26#5#0|23#6#1|24#7#2|25#8#1|29#10#1
 		; [0] = Troop Enum Cross Reference [1] = Slot position [2] = Quantities
@@ -64,14 +65,17 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 			$aTemp[Number($troopData[1])][0] = $troopData[0]
 			$aTemp[Number($troopData[1])][1] = Number($troopData[2])
 			$aTemp[Number($troopData[1])][2] = Number($troopData[1])
+			$aTemp[Number($troopData[1])][3] = Number($troopData[3])
 		Next
 	EndIf
 	For $i = 0 To UBound($aTemp) - 1
 		If $aTemp[$i][0] = "" And $aTemp[$i][1] = "" Then
 			$g_avAttackTroops[$i][0] = -1
 			$g_avAttackTroops[$i][1] = 0
+			$g_avAttackTroops[$i][2] = -1
 		Else
 			Local $troopKind = $aTemp[$i][0]
+			$g_avAttackTroops[$i][2] = -1
 			;If $g_iDebugSetlog=1 Then Setlog("examine troop " &  NameOfTroop($TroopKind) ,$COLOR_DEBUG1)
 			If $troopKind < $eKing Then
 				;If $g_iDebugSetlog=1 Then Setlog("examine troop " &  NameOfTroop($TroopKind) & " -> normal troop",$COLOR_DEBUG1)
@@ -116,8 +120,10 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 
 			$Plural = 0
 			If $aTemp[$i][1] > 1 Then $Plural = 1
-			If $troopKind <> -1 Then SetLog($aTemp[$i][2] & " » " & $g_avAttackTroops[$i][1] & " " & NameOfTroop($g_avAttackTroops[$i][0], $Plural), $COLOR_SUCCESS)
-
+			If $troopKind <> -1 Then
+				SetLog($aTemp[$i][2] & " » " & $g_avAttackTroops[$i][1] & " " & NameOfTroop($g_avAttackTroops[$i][0], $Plural), $COLOR_SUCCESS)
+				$g_avAttackTroops[$i][2] = $aTemp[$i][3]
+			EndIf
 		EndIf
 	Next
 

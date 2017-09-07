@@ -26,7 +26,7 @@ Func TestImglocTroopBar()
 	$g_bRunState = False
 EndFunc   ;==>TestImglocTroopBar
 
-Func AttackBarCheck($Remaining = False)
+Func AttackBarCheck($Remaining = False, $SRIGHT = False)
 
 	Local $x = 0, $y = 659, $x1 = 853, $y1 = 698
 	Static Local $CheckSlot12 = False
@@ -107,9 +107,14 @@ Func AttackBarCheck($Remaining = False)
 
 			_ArraySort($aResult, 0, 0, 0, 1) ; Sort By X position , will be the Slot 0 to $i
 
+
+
 			If Not $Remaining Then
-				$CheckSlot12 = _ColorCheck(_GetPixelColor(17, 643, True), Hex(0x478AC6, 6), 15) Or _  	 ; Slot Filled / Background Blue / More than 11 Slots
-						_ColorCheck(_GetPixelColor(17, 643, True), Hex(0x434343, 6), 10) ; Slot deployed / Gray / More than 11 Slots
+				;$CheckSlot12 = _ColorCheck(_GetPixelColor(17, 643, True), Hex(0x478AC6, 6), 15) Or _  	 ; Slot Filled / Background Blue / More than 11 Slots
+				;		_ColorCheck(_GetPixelColor(17, 643, True), Hex(0x434343, 6), 10) ; Slot deployed / Gray / More than 11 Slots
+
+				If _ColorCheck(_GetPixelColor(858, 650, True), Hex(0x060903, 6), 20) = False Then $CheckSlot12 = True
+				If _ColorCheck(_GetPixelColor(836, 650, True), Hex(0x070900, 6), 20) = False Then $CheckSlot12 = True
 
 				If $g_iDebugSetlog = 1 Then
 					Setlog(" Slot > 12 _ColorCheck 0x478AC6 at (17," & 643 & "): " & $CheckSlot12, $COLOR_DEBUG) ;Debug
@@ -130,7 +135,14 @@ Func AttackBarCheck($Remaining = False)
 				If $aResult[$i][1] > 0 Then
 					If $g_iDebugSetlog = 1 Then SetLog("SLOT : " & $i, $COLOR_DEBUG) ;Debug
 					If $g_iDebugSetlog = 1 Then SetLog("Detection : " & $aResult[$i][0] & "|x" & $aResult[$i][1] & "|y" & $aResult[$i][2], $COLOR_DEBUG) ;Debug
-					$Slottemp = SlotAttack(Number($aResult[$i][1]), $CheckSlot12, $CheckSlotwHero)
+
+					; samm0d
+					If TroopIndexLookup($aResult[$i][0]) = $eCastle Or TroopIndexLookup($aResult[$i][0]) < $eKing Then
+						$Slottemp = SlotAttack(Number($aResult[$i][1]), $CheckSlot12, False, $SRIGHT)
+					Else
+						$Slottemp = SlotAttack(Number($aResult[$i][1]), $CheckSlot12, $CheckSlotwHero, $SRIGHT)
+					EndIf
+
 					If $g_bRunState = False Then Return ; Stop function
 					If _Sleep(20) Then Return ; Pause function
 					If UBound($Slottemp) = 2 Then
@@ -163,7 +175,8 @@ Func AttackBarCheck($Remaining = False)
 						$aResult[$i][3] = -1
 						$aResult[$i][4] = -1
 					EndIf
-					$strinToReturn &= "|" & TroopIndexLookup($aResult[$i][0]) & "#" & $aResult[$i][4] & "#" & $aResult[$i][3]
+					; samm0d
+					$strinToReturn &= "|" & TroopIndexLookup($aResult[$i][0]) & "#" & $aResult[$i][4] & "#" & $aResult[$i][3] & "#" & $aResult[$i][1]
 				EndIf
 			Next
 		EndIf
@@ -201,26 +214,29 @@ Func AttackBarCheck($Remaining = False)
 
 EndFunc   ;==>AttackBarCheck
 
-Func SlotAttack($PosX, $CheckSlot12, $CheckSlotwHero)
-
+Func SlotAttack($PosX, $CheckSlot12, $CheckSlotwHero, $SRIGHT)
 	Local $Slottemp[2] = [0, 0]
-
 	For $i = 0 To 12
 		If $PosX >= 25 + ($i * 73) And $PosX < 98 + ($i * 73) Then
-			$Slottemp[0] = 35 + ($i * 73)
+			; samm0d
+			;========================
+			Local $StartOffsetX = 35
+			If $SRIGHT = True Then $StartOffsetX = 60
+			$Slottemp[0] = $StartOffsetX + ($i * 73)
 			$Slottemp[1] = $i
 			If $CheckSlot12 = True Then
 				$Slottemp[0] -= 13
-			ElseIf $CheckSlotwHero = False Then
+			EndIf
+			If $CheckSlotwHero = False Then
 				$Slottemp[0] += 8
 			EndIf
+			;========================
 			If $g_iDebugSetlog = 1 Then Setlog("Slot: " & $i & " | $x > " & 25 + ($i * 73) & " and $x < " & 98 + ($i * 73))
 			If $g_iDebugSetlog = 1 Then Setlog("Slot: " & $i & " | $PosX: " & $PosX & " |  OCR x position: " & $Slottemp[0] & " | OCR Slot: " & $Slottemp[1])
 			Return $Slottemp
 		EndIf
 		If $g_bRunState = False Then Return
 	Next
-
 	Return $Slottemp
 
 EndFunc   ;==>SlotAttack
