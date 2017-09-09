@@ -39,8 +39,9 @@ Func PrepareAttack($pMatchMode, $Remaining = False, $SRIGHT = False) ;Assigns tr
 		SetLog("Initiating attack for: " & $g_asModeText[$pMatchMode], $COLOR_ERROR)
 	EndIf
 
-	_CaptureRegion2(0, 571 + $g_iBottomOffsetY, 859, 671 + $g_iBottomOffsetY)
-	If _Sleep($DELAYPREPAREATTACK1) Then Return
+	; samm0d - AttackBarCheck() already had capture.
+	;_CaptureRegion2(0, 571 + $g_iBottomOffsetY, 859, 671 + $g_iBottomOffsetY)
+	;If _Sleep($DELAYPREPAREATTACK1) Then Return
 
 	;SuspendAndroid()
 	;Local $result = DllCall($g_hLibMyBot, "str", "searchIdentifyTroop", "ptr", $g_hHBitmap2)

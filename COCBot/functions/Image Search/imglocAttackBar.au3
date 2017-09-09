@@ -48,11 +48,20 @@ Func AttackBarCheck($Remaining = False, $SRIGHT = False)
 	Local $directory = @ScriptDir & "\imgxml\AttackBar"
 	If $g_bRunState = False Then Return
 	; Capture the screen for comparison
-	_CaptureRegion2($x, $y, $x1, $y1)
+
+
+
+
+	_CaptureRegion2()
+
+	Local $hHBitmapAB = 0
+	$hHBitmapAB = GetHHBitmapArea($g_hHBitmap2,$x,$y,$x1,$y1)
 
 	Local $strinToReturn = ""
 	; Perform the search
-	Local $res = DllCallMyBot("SearchMultipleTilesBetweenLevels", "handle", $g_hHBitmap2, "str", $directory, "str", "FV", "Int", 0, "str", $redLines, "Int", 0, "Int", 1000)
+	Local $res = DllCallMyBot("SearchMultipleTilesBetweenLevels", "handle", $hHBitmapAB, "str", $directory, "str", "FV", "Int", 0, "str", $redLines, "Int", 0, "Int", 1000)
+
+	GdiDeleteHBitmap($hHBitmapAB)
 
 	If IsArray($res) Then
 		If $res[0] = "0" Or $res[0] = "" Then
@@ -109,12 +118,14 @@ Func AttackBarCheck($Remaining = False, $SRIGHT = False)
 
 
 			If Not $Remaining Then
-				$CheckSlot12 = _ColorCheck(_GetPixelColor(17, 643, True), Hex(0x478AC6, 6), 15) Or _  	 ; Slot Filled / Background Blue / More than 11 Slots
-						_ColorCheck(_GetPixelColor(17, 643, True), Hex(0x434343, 6), 10) ; Slot deployed / Gray / More than 11 Slots
+				ForceCaptureRegion()
+				_CaptureRegion()
+				$CheckSlot12 = _ColorCheck(_GetPixelColor(17, 643, $g_bNoCapturePixel), Hex(0x478AC6, 6), 15) Or _  	 ; Slot Filled / Background Blue / More than 11 Slots
+						_ColorCheck(_GetPixelColor(17, 643, $g_bNoCapturePixel), Hex(0x434343, 6), 10) ; Slot deployed / Gray / More than 11 Slots
 
 				If $g_iDebugSetlog = 1 Then
 					Setlog(" Slot > 12 _ColorCheck 0x478AC6 at (17," & 643 & "): " & $CheckSlot12, $COLOR_DEBUG) ;Debug
-					Local $CheckSlot12Color = _GetPixelColor(17, 643, $g_bCapturePixel)
+					Local $CheckSlot12Color = _GetPixelColor(17, 643, $g_bNoCapturePixel)
 					Setlog(" Slot > 12 _GetPixelColor(17," & 643 & "): " & $CheckSlot12Color, $COLOR_DEBUG) ;Debug
 				EndIf
 
@@ -125,7 +136,7 @@ Func AttackBarCheck($Remaining = False, $SRIGHT = False)
 				Next
 			EndIf
 
-
+			Local $wasForce = OcrForceCaptureRegion(False)
 
 			For $i = 0 To UBound($aResult) - 1
 				Local $Slottemp
@@ -178,6 +189,8 @@ Func AttackBarCheck($Remaining = False, $SRIGHT = False)
 					$strinToReturn &= "|" & TroopIndexLookup($aResult[$i][0]) & "#" & $aResult[$i][4] & "#" & $aResult[$i][3] & "#" & $aResult[$i][1]
 				EndIf
 			Next
+
+			OcrForceCaptureRegion($wasForce)
 		EndIf
 	EndIf
 
