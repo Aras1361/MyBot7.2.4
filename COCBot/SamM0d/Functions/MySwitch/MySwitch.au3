@@ -644,6 +644,9 @@ Func DoVillageLoadSucess($iAcc)
 			Wait4Main()
 		EndIf
 	EndIf
+	Setlog("Profile Switched !", $COLOR_SUCCESS)
+	Pushmsg("ProfileSwitched")
+	
 ;~ 	If _Sleep(1000) Then Return
 ;~ 	checkMainScreen(True)
 EndFunc
