@@ -1225,6 +1225,9 @@ Func NotifyPushMessageToBoth($Message, $Source = "")
 			EndIf
 		Case "Misc"
 			NotifyPushToBoth($Message)
+		Case "ProfileSwitched"
+			If ($g_bNotifyPBEnable = True Or $g_bNotifyTGEnable = True) And $g_bNotifyAlertProfileSwitch = True Then NotifyPushToBoth($g_sNotifyOrigin & " | " & "Profile Switched ...")
+			
 	EndSwitch
 EndFunc   ;==>NotifyPushMessageToBoth
 
